@@ -4,6 +4,13 @@ dado1=[1,2,3,4,5,6]
 dado2=[1,2,3,4,5,6]
 fichas=100
 n=1
+z=0
+point=0
+apostap=0
+apostaf=0
+apostat=0
+apostaa=0
+
 '''função apostar ou não(não terminei)'''
 def apostar():
     resp=input("\nvocê gostaria de apostar nessa rodada ou sair do jogo?\nDigite'apostar'ou'sair'\n")
@@ -18,83 +25,99 @@ def sorteio():
     resultado=x+y
     return resultado
 def plb():
-    global fichas
-    aposta=int(input("Quantas fichas gostaria de jogar? lembrando que você só pode jogar um número inteiro de fichas"))
-    z=sorteio()
-    print(z)
+    global fichas 
+    global z
+    global apostap
+    print("o número sorteado é:",z)
     if(z== 7 or z== 11):
-        fichas=fichas+aposta 
-        print(fichas)
+        fichas=fichas+apostap 
+        print("Agora você tem o total de: {}".format(fichas))
     elif(z== 2 or z== 3 or z== 12):
-        fichas=fichas-aposta
-        print(fichas)
+        fichas=fichas-apostap
+        print("Agora você tem o total de: {}".format(fichas))
     elif(z== 4 or z== 5 or z== 6 or z== 8 or z== 9 or z== 10):   
         def loop_point():
             w=sorteio()
             global n
             global fichas
-            print("Agora você se encontra na fase point pela {}° vez\n".format(n))
+            print("Agora você se encontra na fase point referente ao modo plb pela {}° vez\n".format(n))
             print("O valor {} retirado no priemiro sorteio é seu point".format(z))
             print("O novo valor sorteado é",w)
             n=n+1
+            print("agora você possui{}fichas",format(fichas))
             if(w==z):
-                fichas=fichas+aposta
+                fichas=fichas+apostap
                 print(fichas)
                 return True
             elif(w==7):
-                fichas=0
+                fichas=fichas-apostap
                 print("você perdeu tudo!!!")
                 return True
             else:
                 return False
         while(loop_point()!=True):
-            loop_point() 
+            loop_point()
+        apostapoint()
 def field():
     global fichas
-    aposta=int(input("Quantas fichas gostaria de jogar? lembrando que você só pode jogar um número inteiro de fichas"))
-    z=sorteio()
-    print(z)
+    global z
+    global apostaf
+    print("O número sorteado é:",z)
     if(z==5 or z==6 or z==7 or z==8):
+        fichas=fichas-apostaf
         print('Você perdeu tudo !!!')
+        print("Agora você tem o total de: {}".format(fichas))
     elif(z==3 or z==4 or z==9 or z==10 or z==11):
         fichas=fichas
-        print(fichas)
+        print("Você contínua com o total de: {}".format(fichas))
     elif(z==2):
-        fichas=fichas+2*aposta
-        print(fichas)
+        fichas=fichas+2*apostaf
+        print("Agora você tem o total de: {}".format(fichas))
     else:
-        fichas=fichas+3*aposta
-        print(fichas)
+        fichas=fichas+3*apostaf
+        print("Agora você tem o total de: {}".format(fichas))
 def anycraps():
     global fichas
-    aposta=int(input("Quantas fichas gostaria de jogar? lembrando que você só pode jogar um número inteiro de fichas"))
-    z=sorteio()
-    print(z)
+    global z
+    global apostaa
+    print("o número sorteado é:",z)
     if(z==2 or z==3 or z==12):
-        fichas=fichas+7*aposta
-        print(fichas)
+        fichas=fichas+7*apostaa
+        print("Agora você tem o total de: {}".format(fichas))
     else:
-        fichas=fichas-aposta
-        print(fichas)
+        fichas=fichas-apostaa
+        print("Agora você tem o total de: {}".format(fichas))
 def twelve():
     global fichas
-    aposta=int(input("Quantas fichas gostaria de jogar? lembrando que você só pode jogar um número inteiro de fichas"))
-    z=sorteio()
-    print(z)
+    global z
+    global apostat
+    print("o número sorteado é:",z)
     if(z==12):
-        fichas=fichas+30*aposta
-        print(fichas)
+        fichas=fichas+30*apostat
+        print("Agora você tem o total de: {}".format(fichas))
     else:
-            fichas=fichas-aposta
-            print(fichas)
+        fichas=fichas-apostat
+        print("Agora você tem o total de: {}".format(fichas))
 '''função apostas(não terminei)'''
 def apostas():
     tipos=[]
     while True:
-        tipo=input("Quais tipos de aposta você gostaria de fazer?\n Digite 'plb' e/ou 'field' e/ou'anycraps' e/ou'twelve' separado por virgulas\nQuando terminar de escolher digite 'acabei' ")
+        global z
+        z=sorteio()
+        tipo=input("Você se encontra na fase Come Out\n \nQuais tipos de aposta você gostaria de fazer?\n \n Digite 'plb' e/ou 'field' e/ou'anycraps' e/ou'twelve' separado por virgulas\nQuando terminar de escolher digite 'acabei' ")
         if (tipo =='acabei'):
             break
         tipos.append(tipo)
+    for word in tipos:
+        global apostaa,apostaf,apostap,apostat
+        if word=='plb':
+            apostap=int(input("Quantas fichas gostaria de jogar? lembrando que você só pode jogar um número inteiro de fichas"))
+        elif word=='field':
+            apostaf=int(input("Quantas fichas gostaria de jogar? lembrando que você só pode jogar um número inteiro de fichas"))   
+        elif word=='anycraps':
+            apostaa=int(input("Quantas fichas gostaria de jogar? lembrando que você só pode jogar um número inteiro de fichas"))
+        elif word=='twelve':
+            apostat=int(input("Quantas fichas gostaria de jogar? lembrando que você só pode jogar um número inteiro de fichas"))     
     for word in tipos:
         if word=='plb':
             print("PlB:\n")
@@ -111,10 +134,28 @@ def apostas():
         elif word=='twelve':
             print("TWELVE:\n")
             twelve()
+def apostapoint():
+    tipos=[]
+    while True:
+        tipo=input("Você continua na fase Points, além do anterior quais outros jogos gostaria de fazer?\n Digite field' e/ou'anycraps' e/ou'twelve' separado por virgulas\nQuando terminar de escolher digite 'acabei' ")
+        if (tipo =='acabei'):
+            break
+        tipos.append(tipo)
+    for word in tipos:
+        if word=='field':
+            print("FIELD:\n")
+            field()
             
+        elif word=='anycraps':
+            print("ANYCRAPS:\n")
+            anycraps()
+            
+        elif word=='twelve':
+            print("TWELVE:\n")
+            twelve()
 
 
-print("\nBem vindo ao Craps Insper, você esta na fase 'Come Out' e inicia com 100 fichas \n")
+print("\nBem vindo ao Craps Insper, você inicia com 100 fichas \n")
 
 if (apostar()==True):
     while(fichas>0):
